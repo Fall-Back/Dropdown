@@ -1,0 +1,20 @@
+{
+    "name": "Fall-Back-Dropdown",
+    "version": "1.0.0",
+    "homepage": "https://github.com/Fall-Back/Dropdown",
+    "authors": [
+        "Andy Kirk <andy.kirk@gridlight-design.co.uk>"
+    ],
+    "description": "A pattern for a dropdown.",
+    "main": "_dropdown.scss",
+    "ignore": [],
+    "keywords": [
+        "fallback",
+        "css",
+        "dropdown"
+    ],
+    "license": "Apache",
+    "dependencies": {
+        "Fall-Back-Base": "https://github.com/Fall-Back/Base.git"
+    }
+}
