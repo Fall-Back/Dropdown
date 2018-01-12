@@ -1,1 +1,4 @@
-# Dropdown
+Dropdown
+========
+
+A responsive dropdown component.
