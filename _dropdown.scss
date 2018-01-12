@@ -1,0 +1,323 @@
+/*-------------------------------------------------------------------------------------------------|
+    Fall-Back Start-CSS Settings v1.0.0
+
+    Fall-Back is designed for use with the basic
+    [CSS Mustard Cut](https://github.com/Fall-Back/CSS-Mustard-Cut)
+
+    This determines a browser support base of:
+
+    IE 9+, FF 8+, Opera 12, [Chrome 29+, Android ~4.4+]
+    Chrome 29+, Opera 16+, Safari 6.1+, iOS 7+, Android ~4.4+
+
+
+    Any double-classing (e.g. `.class.class`) is deliberate and intended to increase specificity.
+    This allows any applicable Start-CSS declarations to be overridden.
+    E.g. `.{pattern} .{pattern}__child` would `a[href]`, but just `.{pattern}` wouldn't, so we use
+    `.{pattern}.{pattern}`
+
+
+
+|-------------------------------------------------------------------------------------------------*/
+
+$fallback--root-font-size:         16px !default;
+$fallback--base-font-size:         16px !default;
+$fallback--base-line-height:       24px !default; // 1.25
+
+$fallback--base-em-ratio:          $fallback--base-line-height / $fallback--base-font-size; // 1.71428571429
+$fallback--root-font-size-percent: ($fallback--root-font-size / 16px) * 100;
+//@debug $fallback--base-line-height;
+//@debug ($fallback--base-line-height / $fallback--root-font-size);
+//@debug ($fallback--base-line-height / $fallback--root-font-size) * 1rem;
+
+$fallback--base-rem-space-unit:    ($fallback--base-line-height / $fallback--root-font-size) * 1rem;
+$fallback--base-rem-1px:           1px / $fallback--root-font-size * 1rem;
+$fallback--base-em-1px:            1px / $fallback--root-font-size * 1em;
+$fallback--mq-1-em-px:             0.0625em;
+
+$fallback--base-font-family:       sans-serif !default;
+// Consider:
+//$fallback--base-font-family:       -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif !default;
+// https://bitsofco.de/the-new-system-font-stack/ https://github.com/necolas/normalize.css/issues/665
+
+
+$fallback--base-ui-color:          #663399 !default; //rebeccapurple #663399 rgb(102,51,153)
+
+$fallback--base-background-color:  #fff !default;
+$fallback--base-text-color:        #333 !default;
+
+$fallback--breakpoint--enhanced:   50em !default;
+
+/*-------------------------------------------------------------------------------------------------|
+    Fall-Back Dropdown Pattern v1.0.0
+|-------------------------------------------------------------------------------------------------*/
+
+$fallback--dropdown--breakpoint--enhanced:          $fallback--breakpoint--enhanced;
+
+
+// Colours:
+
+$fallback--dropdown--base-ui-color:                 $fallback--base-ui-color !default;
+$fallback--dropdown--base-text-color:               $fallback--base-text-color !default;
+
+
+$fallback--dropdown--background-color:              $fallback--dropdown--base-ui-color !default;
+$fallback--dropdown--text-color:                    #fff !default;
+
+$fallback--dropdown__button--color:                  #fff !default;
+$fallback--dropdown__button--color--alt:             $fallback--dropdown__button--color !default;
+$fallback--dropdown__button--background-color:       $fallback--dropdown--background-color !default;
+$fallback--dropdown__button--background-color--alt:  darken($fallback--dropdown--background-color, 14%) !default;
+$fallback--dropdown__button--background-color--alt2: darken($fallback--dropdown--background-color, 7%) !default;
+
+$fallback--dropdown__button--border-color:           rgba(255,255,255,0.2) !default;
+$fallback--dropdown__button--border-style:           solid !default;
+$fallback--dropdown__button--border-width:           1px !default;
+$fallback--dropdown__button--border-radius:          0 !default;
+
+
+
+
+// Sizes:
+$fallback--dropdown__button--height:                 ($fallback--base-em-ratio * 1.5em) !default;
+$fallback--dropdown--spacing:                        ($fallback--dropdown__button--height / 8) !default;
+
+
+$fallback--dropdown--padding:                        $fallback--base-rem-space-unit !default;
+
+// Transitions:
+$fallback--dropdown--transition-duration:            ease;
+$fallback--dropdown--transition-timing-function:     0.8s;
+
+
+
+// Other:
+
+
+$fallback--dropdown-z-index:                         9999 !default;
+
+
+// MQ hacks:
+// https://jeffclayton.wordpress.com/2014/07/22/internet-explorer-css-hacks-collection/
+// 0\0 encoded to preserve hack.
+//$fallback--ie9--hack:                             "all and (min-width: \0030\005C\0030) and (min-resolution: .001dpcm)" !default;
+
+/* -- Basic/fallback layout --------------------------------------------------------------------- */
+
+    /* -- .dropdown -------------------------------------------------------------------------------*/
+
+    /*
+        1. Helps to position above subsequent elements so subnavs sit on top.
+    */
+    /*.dropdown.dropdown {
+        background-color: $fallback--dropdown--background-color;
+        position: relative;
+        z-index: $fallback--dropdown-z-index; /* [1] *
+
+        @if $fallback--dropdown--font-size != $fallback--base-font-size {
+            font-size: $fallback--dropdown--font-size;
+        }
+    }*/
+
+	/*
+		This is a bit of a hack, but it's a way of letting JS know that this CSS has loaded.
+		It doesn't work for Opera Mini, but I'm happy to provide this browser only with the
+		unenhanced version.
+	*/
+	.dropdown::before {
+		content: 'CSS Loaded';
+        display: none;
+	}
+
+    /* -------------------------------------------------------------------------------------------*/
+
+
+    
+    /* -- .dropdown__area ------------------------------------------------------------------------*/
+
+    /*
+        1. Duplicating parent background-color here. There HAS to be a color here for the pattern
+           to work, the parent background-color is there to allow things to be NOT BROKEN on
+           browsers that don't support HTML semantic elements.
+
+        2. Prevent any overflow and possible contain floats.
+    */
+    .dropdown .dropdown__area {
+        background-color: $fallback--dropdown--background-color; /* 1 */
+        color: $fallback--dropdown--text-color;
+        overflow: hidden; /* 2 */
+        padding: $fallback--dropdown--padding;
+    }
+
+    /* -------------------------------------------------------------------------------------------*/
+
+
+  
+
+    /* -- .dropdown__button ----------------------------------------------------------------------*/
+	/*
+		1. These override button styles defined as part of StartCSS. I may consider making these
+		   customisable via more variables.
+	*/
+    .dropdown .dropdown__button {
+        display: block;
+        margin: 0;
+        //padding: ($fallback--dropdown--spacing * 1.333333) ($fallback--dropdown--spacing * 2);
+        padding-left: $fallback--dropdown--spacing * 2;
+        padding-right: $fallback--dropdown--spacing * 2;
+		padding-bottom: 0; /* 1 */
+		padding-top: 0; /* 1 */
+
+        border: 0;
+        border-radius: $fallback--dropdown__button--border-radius;
+
+        line-height: $fallback--dropdown__button--height;
+
+        text-decoration: none;
+        outline: 0;
+
+		box-shadow: none; /* 1 */
+    }
+
+    // This is to turn off Start-CSS's hover border:
+    .dropdown .dropdown__button:hover,
+    .dropdown .dropdown__button:active,
+    .dropdown .dropdown__button:focus {
+        border: 0;
+    }
+
+    .dropdown__button--centered {
+            text-align: center;
+    }
+
+
+    /*
+        Fix for Opera Mini vertical centering:
+        (affects Opera 12.10-16 as well)
+    */
+    _:-o-prefocus, body:last-child .dropdown .dropdown__button {
+        //line-height: 1.71428571429 !important;
+        line-height: $fallback--dropdown__button--height !important;
+
+
+    }
+
+
+    .dropdown .dropdown__button {
+        color: $fallback--dropdown__button--color;
+        background-color: $fallback--dropdown__button--background-color;
+    }
+
+    /*
+        Provide interaction effects for dropdown links that ARE links:
+        (this excludes submenu heading links - note that submenu links should never also be
+        submenu heading links)
+    */
+
+    .dropdown .dropdown__button:hover,
+    .dropdown .dropdown__button:active,
+    .dropdown .dropdown__button[aria-expanded="true"] {
+        color: $fallback--dropdown__button--color--alt;
+        background-color: $fallback--dropdown__button--background-color--alt;
+    }
+
+    .dropdown .dropdown__button:focus {
+        color: $fallback--dropdown__button--color--alt;
+        background-color: $fallback--dropdown__button--background-color--alt2;
+    }
+
+    
+    .dropdown .dropdown__button {
+        display: none;
+    }
+    
+    /* -------------------------------------------------------------------------------------------*/
+
+/* -----------------------------------------------------------------------------------------------*/
+
+
+/* ********************************************************************************************** */
+/* -- Enhanced layout --------------------------------------------------------------------------- */
+/*
+    This layout can only be used if JS is there to support the toggling of hidden submenus.
+    (CSS only attempts weren't good enough)
+    So, scoping these styles to the 'js-dropdown' class.
+*/
+
+    @media only screen and (min-width: $fallback--dropdown--breakpoint--enhanced) {
+
+        /*
+            1. Flex is only really needed for 'additional' to fill up the space.
+               I don't think this would actually do any harm...
+        */
+        /*.js-dropdown.dropdown {
+            position: relative;
+            z-index: 1000; // @var
+
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex; /* 1 *
+        }*/
+
+
+        /*
+            1. Floating left to allow 'additional' to appear on the same line, but width 100% to
+               make sure any subnavs are properly obscured, otherwise it looks weird.
+               However, this makes 'additional' collapse to it's content.
+               In the case of search form, this means the form is smaller than it could be.
+               It's still usable, but ...
+
+            2. ... flex makes this better ...
+        */
+ 
+        
+        // Variable aliases for ease of comprehension:
+        $td: $fallback--dropdown--transition-duration;
+        $tf: $fallback--dropdown--transition-timing-function;
+
+        //.js-over-panel_is-animating.over-panel--fade .over-panel__contents {
+        .js-dropdown .dropdown__area {
+            position: absolute;
+        
+            visibility: hidden;
+            opacity: 0;
+        
+        
+            -webkit-transition: opacity    $td  $tf,
+                                visibility 0s   $tf  $td;
+            -moz-transition:    opacity    $td  $tf,
+                                visibility 0s   $tf  $td;
+            -o-transition:      opacity    $td  $tf,
+                                visibility 0s   $tf  $td;
+            transition:         opacity    $td  $tf,
+                                visibility 0s   $tf  $td;
+        }
+
+        .js-dropdown .dropdown__button {
+            display: block;
+        }
+        
+        .js-dropdown .dropdown__button .icon--is-open,
+        .js-dropdown .dropdown__button[aria-expanded="true"] .icon--is-closed {
+            display: none;
+        }
+
+        .js-dropdown .dropdown__button .icon--is-closed,
+        .js-dropdown .dropdown__button[aria-expanded="true"] .icon--is-open {
+            display: inline;
+        }
+        
+        .js-dropdown .dropdown__button[aria-expanded="true"] ~ .dropdown__area {
+            visibility: visible;
+            opacity: 1;
+
+            
+            -webkit-transition: opacity $td  $tf;
+            -moz-transition:    opacity $td  $tf;
+            -o-transition:      opacity $td  $tf;
+            transition:         opacity $td  $tf;
+        }
+
+
+    }
+
+/* -----------------------------------------------------------------------------------------------*/

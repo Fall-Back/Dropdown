@@ -1,0 +1,179 @@
+/*-------------------------------------------------------------------------------------------------|
+    Fall-Back Start-CSS Settings v1.0.0
+
+    Fall-Back is designed for use with the basic
+    [CSS Mustard Cut](https://github.com/Fall-Back/CSS-Mustard-Cut)
+
+    This determines a browser support base of:
+
+    IE 9+, FF 8+, Opera 12, [Chrome 29+, Android ~4.4+]
+    Chrome 29+, Opera 16+, Safari 6.1+, iOS 7+, Android ~4.4+
+
+
+    Any double-classing (e.g. `.class.class`) is deliberate and intended to increase specificity.
+    This allows any applicable Start-CSS declarations to be overridden.
+    E.g. `.{pattern} .{pattern}__child` would `a[href]`, but just `.{pattern}` wouldn't, so we use
+    `.{pattern}.{pattern}`
+
+
+
+|-------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------|
+    Fall-Back Dropdown Pattern v1.0.0
+|-------------------------------------------------------------------------------------------------*/
+/* -- Basic/fallback layout --------------------------------------------------------------------- */
+/* -- .dropdown -------------------------------------------------------------------------------*/
+/*
+        1. Helps to position above subsequent elements so subnavs sit on top.
+    */
+/*.dropdown.dropdown {
+        background-color: $fallback--dropdown--background-color;
+        position: relative;
+        z-index: $fallback--dropdown-z-index; /* [1] *
+
+        @if $fallback--dropdown--font-size != $fallback--base-font-size {
+            font-size: $fallback--dropdown--font-size;
+        }
+    }*/
+/*
+		This is a bit of a hack, but it's a way of letting JS know that this CSS has loaded.
+		It doesn't work for Opera Mini, but I'm happy to provide this browser only with the
+		unenhanced version.
+	*/
+.dropdown::before {
+  content: 'CSS Loaded';
+  display: none; }
+
+/* -------------------------------------------------------------------------------------------*/
+/* -- .dropdown__area ------------------------------------------------------------------------*/
+/*
+        1. Duplicating parent background-color here. There HAS to be a color here for the pattern
+           to work, the parent background-color is there to allow things to be NOT BROKEN on
+           browsers that don't support HTML semantic elements.
+
+        2. Prevent any overflow and possible contain floats.
+    */
+.dropdown .dropdown__area {
+  background-color: #663399;
+  /* 1 */
+  color: #fff;
+  overflow: hidden;
+  /* 2 */
+  padding: 1.5rem; }
+
+/* -------------------------------------------------------------------------------------------*/
+/* -- .dropdown__button ----------------------------------------------------------------------*/
+/*
+		1. These override button styles defined as part of StartCSS. I may consider making these
+		   customisable via more variables.
+	*/
+.dropdown .dropdown__button {
+  display: block;
+  margin: 0;
+  padding-left: 0.5625em;
+  padding-right: 0.5625em;
+  padding-bottom: 0;
+  /* 1 */
+  padding-top: 0;
+  /* 1 */
+  border: 0;
+  border-radius: 0;
+  line-height: 2.25em;
+  text-decoration: none;
+  outline: 0;
+  box-shadow: none;
+  /* 1 */ }
+
+.dropdown .dropdown__button:hover,
+.dropdown .dropdown__button:active,
+.dropdown .dropdown__button:focus {
+  border: 0; }
+
+.dropdown__button--centered {
+  text-align: center; }
+
+/*
+        Fix for Opera Mini vertical centering:
+        (affects Opera 12.10-16 as well)
+    */
+_:-o-prefocus, body:last-child .dropdown .dropdown__button {
+  line-height: 2.25em !important; }
+
+.dropdown .dropdown__button {
+  color: #fff;
+  background-color: #663399; }
+
+/*
+        Provide interaction effects for dropdown links that ARE links:
+        (this excludes submenu heading links - note that submenu links should never also be
+        submenu heading links)
+    */
+.dropdown .dropdown__button:hover,
+.dropdown .dropdown__button:active,
+.dropdown .dropdown__button[aria-expanded="true"] {
+  color: #fff;
+  background-color: #422163; }
+
+.dropdown .dropdown__button:focus {
+  color: #fff;
+  background-color: #542a7e; }
+
+.dropdown .dropdown__button {
+  display: none; }
+
+/* -------------------------------------------------------------------------------------------*/
+/* -----------------------------------------------------------------------------------------------*/
+/* ********************************************************************************************** */
+/* -- Enhanced layout --------------------------------------------------------------------------- */
+/*
+    This layout can only be used if JS is there to support the toggling of hidden submenus.
+    (CSS only attempts weren't good enough)
+    So, scoping these styles to the 'js-dropdown' class.
+*/
+@media only screen and (min-width: 50em) {
+  /*
+            1. Flex is only really needed for 'additional' to fill up the space.
+               I don't think this would actually do any harm...
+        */
+  /*.js-dropdown.dropdown {
+            position: relative;
+            z-index: 1000; // @var
+
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex; /* 1 *
+        }*/
+  /*
+            1. Floating left to allow 'additional' to appear on the same line, but width 100% to
+               make sure any subnavs are properly obscured, otherwise it looks weird.
+               However, this makes 'additional' collapse to it's content.
+               In the case of search form, this means the form is smaller than it could be.
+               It's still usable, but ...
+
+            2. ... flex makes this better ...
+        */
+  .js-dropdown .dropdown__area {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: opacity ease 0.8s, visibility 0s 0.8s ease;
+    -moz-transition: opacity ease 0.8s, visibility 0s 0.8s ease;
+    -o-transition: opacity ease 0.8s, visibility 0s 0.8s ease;
+    transition: opacity ease 0.8s, visibility 0s 0.8s ease; }
+  .js-dropdown .dropdown__button {
+    display: block; }
+  .js-dropdown .dropdown__button .icon--is-open,
+  .js-dropdown .dropdown__button[aria-expanded="true"] .icon--is-closed {
+    display: none; }
+  .js-dropdown .dropdown__button .icon--is-closed,
+  .js-dropdown .dropdown__button[aria-expanded="true"] .icon--is-open {
+    display: inline; }
+  .js-dropdown .dropdown__button[aria-expanded="true"] ~ .dropdown__area {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: opacity ease 0.8s;
+    -moz-transition: opacity ease 0.8s;
+    -o-transition: opacity ease 0.8s;
+    transition: opacity ease 0.8s; } }
+
+/* -----------------------------------------------------------------------------------------------*/
