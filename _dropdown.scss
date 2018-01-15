@@ -82,7 +82,8 @@ $fallback--dropdown__button--height:                 ($fallback--base-em-ratio *
 $fallback--dropdown--spacing:                        ($fallback--dropdown__button--height / 8) !default;
 
 
-$fallback--dropdown--padding:                        $fallback--base-rem-space-unit !default;
+$fallback--dropdown--padding:                        0 !default;
+//$fallback--dropdown--padding:                        $fallback--base-rem-space-unit !default;
 
 // Transitions:
 $fallback--dropdown--transition-duration:            ease;

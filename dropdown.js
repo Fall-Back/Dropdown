@@ -26,8 +26,6 @@
                 .replace(/(\"|\')/g, '')
                 == 'CSS Loaded'
             );
-            //console.log(window.getComputedStyle(dropdown, ':before').getPropertyValue('content'));
-            //console.log(css_is_loaded);
 
             if (css_is_loaded) {
                 // Add the JS class names ...
@@ -37,15 +35,6 @@
                     dropdown.className += ' ' + dropdown_js_classname;
                 }
                 // ... and button actions:
-                // (note a dilemma here, as the toggle button code is designed to be generic, but I
-                // don't want to run it for ALL `.js-toggle-button` by default, because I'm being
-                // more discerning than that. I.e. I NEVER want this running for Opera Mini, and I
-                // ONLY want it running for Dropdowns if the Dropdown CSS has loaded.
-                // Maybe just abstract the toggle code into a standalone file, and make it callable
-                // and act upon a selector that's passed to it).
-                // NOTE! Can't use .js-toggle-button as a general classname because of collisions
-                // with other scripts. I.e. nav0bar in this case. I can't have both nav-bar AND
-                // dropdown events on the same button.
                 var buttons = document.querySelectorAll('.js-dropdown .js-dropdown__button');
                 Array.prototype.forEach.call(buttons, function(button, i) {
                     var button_id = button.getAttribute('id');
