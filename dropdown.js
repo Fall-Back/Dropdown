@@ -39,8 +39,8 @@
 	var dropdown = {
 
         init: function() {
-            /*var dropdown = document.querySelector('.dropdown');
-            var dropdown_js_classname = 'js-dropdown';
+            var dropdowns = document.querySelectorAll('.dropdown');
+            /*var dropdown_js_classname = 'js-dropdown';
             // Note that `getComputedStyle` on pseudo elements doesn't work in Opera Mini, but in
             // this case I'm happy to serve only the un-enhanced version to Opera Mini.
             var css_is_loaded = (
@@ -51,42 +51,43 @@
             );*/
 
             if (css_is_loaded) {
-                // Add the JS class names ...
-                if (dropdown.classList) {
-                    dropdown.classList.add(dropdown_js_classname);
-                } else {
-                    dropdown.className += ' ' + dropdown_js_classname;
-                }
-                // ... and button actions:
-                var buttons = document.querySelectorAll('.js-dropdown .js-dropdown__button');
-                Array.prototype.forEach.call(buttons, function(button, i) {
-                    var button_id = button.getAttribute('id');
+                Array.prototype.forEach.call(dropdowns, function(dropdown, i) {
+                    // Add the JS class names ...
+                    if (dropdown.classList) {
+                        dropdown.classList.add(dropdown_js_classname);
+                    } else {
+                        dropdown.className += ' ' + dropdown_js_classname;
+                    }
+                    // ... and button actions:
+                    var buttons = document.querySelectorAll('[data-js="dropdown__button"]');
+                    Array.prototype.forEach.call(buttons, function(button, i) {
+                        var button_id = button.getAttribute('id');
 
-                    button.setAttribute('aria-expanded', 'false');
+                        button.setAttribute('aria-expanded', 'false');
 
-                    // Main button:
-                    button.addEventListener('click', function() {
-                        // Switch the `aria-expanded` attribute:
-                        var expanded = this.getAttribute('aria-expanded') === 'true' || false;
+                        // Main button:
+                        button.addEventListener('click', function() {
+                            // Switch the `aria-expanded` attribute:
+                            var expanded = this.getAttribute('aria-expanded') === 'true' || false;
 
-                        // Close any open dropdown:
-                        var expanded_buttons = document.querySelectorAll('.js-dropdown .js-dropdown__button[aria-expanded="true"]');
-                        Array.prototype.forEach.call(expanded_buttons, function(expanded_button, i) {
-                            expanded_button.setAttribute('aria-expanded', 'false');
-                        });
+                            // Close any open dropdown:
+                            var expanded_buttons = document.querySelectorAll('[data-js="dropdown__button"][aria-expanded="true"]');
+                            Array.prototype.forEach.call(expanded_buttons, function(expanded_button, i) {
+                                expanded_button.setAttribute('aria-expanded', 'false');
+                            });
 
-                        // Set the attribute:
-                        this.setAttribute('aria-expanded', !expanded);
+                            // Set the attribute:
+                            this.setAttribute('aria-expanded', !expanded);
 
-                        // Set the focus to the first link if submenu newly opened:
-                        if (!expanded) {
-                            var first_link = document.querySelector('#' + button_id + '--target .drop__link');
-                            if (first_link) {
-                                first_link.focus();
+                            // Set the focus to the first link if submenu newly opened:
+                            if (!expanded) {
+                                var first_link = document.querySelector('#' + button_id + '--target [data-js="dropdown__focus-start"]');
+                                if (first_link) {
+                                    first_link.focus();
+                                }
                             }
-                        }
+                        });
                     });
-
                 });
             }
         }
