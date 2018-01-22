@@ -39,10 +39,15 @@
 		This is a bit of a hack, but it's a way of letting JS know that this CSS has loaded.
 		It doesn't work for Opera Mini, but I'm happy to provide this browser only with the
 		unenhanced version.
+        UPDATE: Due to problem with FOBP, now checking for existence of class in styesheet earlier
+        on, so this isn't needed:
 	*/
-.dropdown::before {
-  content: 'CSS Loaded';
-  display: none; }
+/*.nav-bar::before {
+		content: 'CSS Loaded';
+        display: none;
+	}*/
+.js-dropdown {
+  border: 0; }
 
 /* -------------------------------------------------------------------------------------------*/
 /* -- .dropdown__area ------------------------------------------------------------------------*/

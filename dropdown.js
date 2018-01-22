@@ -5,6 +5,29 @@
     Released under the MIT license https://git.io/vwTVl
 */
 (function() {
+    
+    var dropdown_js_classname = 'js-dropdown'; 
+
+    var check_for_css = function(selector) {
+        var rules;
+        var haveRule = false;
+        if (typeof document.styleSheets != "undefined") {// is this supported
+            var cssSheets = document.styleSheets;
+            outerloop:
+            for (var i = 0; i < cssSheets.length; i++) {
+                // using IE or FireFox/Standards Compliant
+                rules = (typeof cssSheets[i].cssRules != "undefined") ? cssSheets[i].cssRules : cssSheets[i].rules;
+                for (var j = 0; j < rules.length; j++) {
+                    if (rules[j].selectorText == selector) {
+                        haveRule = true;
+                        break outerloop;
+                    }
+                }
+            }
+        }
+        return haveRule;
+    }
+    
     var ready = function(fn) {
         if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
             fn();
@@ -16,7 +39,7 @@
 	var dropdown = {
 
         init: function() {
-            var dropdown = document.querySelector('.dropdown');
+            /*var dropdown = document.querySelector('.dropdown');
             var dropdown_js_classname = 'js-dropdown';
             // Note that `getComputedStyle` on pseudo elements doesn't work in Opera Mini, but in
             // this case I'm happy to serve only the un-enhanced version to Opera Mini.
@@ -25,7 +48,7 @@
                 .getPropertyValue('content')
                 .replace(/(\"|\')/g, '')
                 == 'CSS Loaded'
-            );
+            );*/
 
             if (css_is_loaded) {
                 // Add the JS class names ...
@@ -68,6 +91,20 @@
             }
         }
 	}
+    
+    var css_is_loaded = check_for_css('.' + dropdown_js_classname);
+    
+    if (css_is_loaded) {
+        // Add the JS class name ...
+        
+        var hmtl_el = document.querySelector('html');
+        
+        if (hmtl_el.classList) {
+            hmtl_el.classList.add(dropdown_js_classname);
+        } else {
+            hmtl_el.className += ' ' + dropdown_js_classname;
+        }
+    }
 
 	ready(dropdown.init);
 })();
