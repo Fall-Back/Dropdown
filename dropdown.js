@@ -5,18 +5,28 @@
     Released under the MIT license https://git.io/vwTVl
 */
 (function() {
-    
-    var dropdown_js_classname = 'js-dropdown'; 
+
+    var dropdown_js_classname = 'js-dropdown';
 
     var check_for_css = function(selector) {
+
         var rules;
         var haveRule = false;
         if (typeof document.styleSheets != "undefined") {// is this supported
             var cssSheets = document.styleSheets;
+            var domain_regex  = RegExp('^' + document.location.origin);
             outerloop:
             for (var i = 0; i < cssSheets.length; i++) {
-                // using IE or FireFox/Standards Compliant
-                rules = (typeof cssSheets[i].cssRules != "undefined") ? cssSheets[i].cssRules : cssSheets[i].rules;
+                var sheet = cssSheets[i];
+
+                // Some browsers don't allow checking of rules if not on the same domain (CORS), so
+                // checking for that here:
+                if (sheet.href !== null && domain_regex.exec(sheet.href) === null) {
+                    continue;
+                }
+
+                // Check for IE or standards:
+                rules = (typeof sheet.cssRules != "undefined") ? sheet.cssRules : sheet.rules;
                 for (var j = 0; j < rules.length; j++) {
                     if (rules[j].selectorText == selector) {
                         haveRule = true;
@@ -26,14 +36,6 @@
             }
         }
         return haveRule;
-    }
-    
-    var ready = function(fn) {
-        if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
-            fn();
-        } else {
-            document.addEventListener('DOMContentLoaded', fn);
-        }
     }
 
 	var dropdown = {
@@ -92,14 +94,14 @@
             }
         }
 	}
-    
+
+    // This is _here_ to mitigate a Flash of Basic Styled Dropdown:
     var css_is_loaded = check_for_css('.' + dropdown_js_classname);
-    
+
     if (css_is_loaded) {
         // Add the JS class name ...
-        
         var hmtl_el = document.querySelector('html');
-        
+
         if (hmtl_el.classList) {
             hmtl_el.classList.add(dropdown_js_classname);
         } else {
