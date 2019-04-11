@@ -114,12 +114,12 @@
 
     if (css_is_loaded) {
         // Add the JS class name ...
-        var hmtl_el = document.querySelector('html');
+        var html_el = document.querySelector('html');
 
-        if (hmtl_el.classList) {
-            hmtl_el.classList.add(dropdown_js_classname);
+        if (html_el.classList) {
+            html_el.classList.add(dropdown_js_classname);
         } else {
-            hmtl_el.className += ' ' + dropdown_js_classname;
+            html_el.className += ' ' + dropdown_js_classname;
         }
     }
 
